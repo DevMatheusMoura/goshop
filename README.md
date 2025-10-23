@@ -1,4 +1,4 @@
-# GoShop - Sistema de E-commerce
+[_DATABASE_GOSHOP_.sql](https://github.com/user-attachments/files/23105741/_DATABASE_GOSHOP_.sql)# GoShop - Sistema de E-commerce
 
 Sistema de gerenciamento de produtos e pedidos com autenticação JWT e controle de acesso baseado em perfis.
 
@@ -21,11 +21,130 @@ cd goshop
 
 #### 2.1. Instale e configure o MySQL
 - Instale o MySQL 8.0+
-- Crie um banco de dados chamado `goshop`
+- Importe o banco de dados através
 - Configure um usuário com acesso ao banco
 
-#### 2.2. Configure as credenciais no `application.yml`
-```yaml
+#### 2.2. Importe o MySQL
+- Utilize o dump do banco de dados
+  -  [Uploa-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3306
+-- Versão do servidor: 9.1.0
+-- Versão do PHP: 8.3.14
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Banco de dados: `goshop`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `itens_pedido`
+--
+
+DROP TABLE IF EXISTS `itens_pedido`;
+CREATE TABLE IF NOT EXISTS `itens_pedido` (
+  `id` binary(16) NOT NULL,
+  `preco_unitario` decimal(38,2) DEFAULT NULL,
+  `quantidade` int DEFAULT NULL,
+  `pedido_id` binary(16) NOT NULL,
+  `produto_id` binary(16) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK42mycompce3b7yt3l6ukdwsxy` (`pedido_id`),
+  KEY `FKxytdlekpdaobqphujy9bmuhl` (`produto_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `pedidos`
+--
+
+DROP TABLE IF EXISTS `pedidos`;
+CREATE TABLE IF NOT EXISTS `pedidos` (
+  `id` binary(16) NOT NULL,
+  `data_de_atualizacao` datetime(6) DEFAULT NULL,
+  `data_de_criacao` datetime(6) DEFAULT NULL,
+  `status` enum('CANCELADO','PAGO','PENDENTE') DEFAULT NULL,
+  `valor_total` decimal(38,2) DEFAULT NULL,
+  `usuario_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK5g0es69v35nmkmpi8uewbphs2` (`usuario_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `produtos`
+--
+
+DROP TABLE IF EXISTS `produtos`;
+CREATE TABLE IF NOT EXISTS `produtos` (
+  `id` binary(16) NOT NULL,
+  `categoria` varchar(255) NOT NULL,
+  `data_de_atualizacao` datetime(6) DEFAULT NULL,
+  `data_de_criacao` datetime(6) DEFAULT NULL,
+  `descricao` varchar(255) DEFAULT NULL,
+  `nome` varchar(255) NOT NULL,
+  `preco` decimal(38,2) NOT NULL,
+  `quantidade_em_estoque` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `cpf` varchar(255) DEFAULT NULL,
+  `data_nascimento` date NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `nome_completo` varchar(255) NOT NULL,
+  `perfil` enum('ADMIN','USER') DEFAULT NULL,
+  `senha` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `itens_pedido`
+--
+ALTER TABLE `itens_pedido`
+  ADD CONSTRAINT `FK42mycompce3b7yt3l6ukdwsxy` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`id`),
+  ADD CONSTRAINT `FKxytdlekpdaobqphujy9bmuhl` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`);
+
+--
+-- Restrições para tabelas `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD CONSTRAINT `FK5g0es69v35nmkmpi8uewbphs2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ding _DATABASE_GOSHOP_.sql…]()
+
+#### 2.3. Configure as credenciais no `application.yml`
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/goshop?createDatabaseIfNotExist=true
