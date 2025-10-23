@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/pedidos").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/pedidos/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/relatorios/**").hasRole("ADMIN")
+                        .requestMatchers("/consultas-otimizadas/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
