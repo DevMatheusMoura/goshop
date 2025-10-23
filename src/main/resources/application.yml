@@ -1,3 +1,21 @@
 server:
   servlet:
     context-path: /goshop
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/goshop?createDatabaseIfNotExist=true
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  secret: seu-segredo-jwt-aqui-deve-ser-longo-e-seguro
+  expiration: 86400000 # 24 horas em milissegundos
