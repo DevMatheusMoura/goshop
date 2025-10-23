@@ -1,1 +1,3 @@
-spring.application.name=goshop
+server:
+  servlet:
+    context-path: /goshop
